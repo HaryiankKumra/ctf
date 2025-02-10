@@ -1,0 +1,15 @@
+{% extends 'ctf/base.html' %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-box">
+        <h1>CTF Hackathon Login</h1>
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="team_name" placeholder="Team Name" required>
+            <input type="password" name="team_code" placeholder="Team Code" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

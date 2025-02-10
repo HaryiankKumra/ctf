@@ -1,0 +1,58 @@
+{% extends 'ctf/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>CTF Questions</h1>
+    <div id="question-container" class="question-card">
+        <!-- Question card will be dynamically loaded here -->
+    </div>
+    <div class="mt-4">
+        <button id="next-btn" class="question-card button">Next Question</button>
+    </div>
+</div>
+
+<script>
+    let questions = {{ questions|safe }};
+    let currentIndex = 0;
+
+    function loadQuestion(index) {
+        const question = questions[index];
+        const container = document.getElementById('question-container');
+        container.innerHTML = `
+            <h2>${question.title}</h2>
+            <p>${question.description}</p>
+            <p>Difficulty: ${question.difficulty}</p>
+            <p>Points: ${question.points}</p>
+            <input type="text" id="answer-input" placeholder="Enter your answer">
+            <button onclick="submitAnswer('${question.id}')">Submit Answer</button>
+        `;
+    }
+
+    function submitAnswer(questionId) {
+        const answer = document.getElementById('answer-input').value;
+        fetch(`/submit-answer/${questionId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ answer: answer })
+        }).then(response => response.json())
+          .then(data => {
+              if (data.correct) {
+                  alert('Correct answer!');
+              } else {
+                  alert('Wrong answer!');
+              }
+          });
+    }
+
+    document.getElementById('next-btn').addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % questions.length;
+        loadQuestion(currentIndex);
+    });
+
+    // Load first question on page load
+    loadQuestion(currentIndex);
+</script>
+{% endblock %}
