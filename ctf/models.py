@@ -1,6 +1,8 @@
 from djongo import models
 
 class Team(models.Model):
+    # Define a custom primary key (e.g., CharField)
+    team_id = models.CharField(max_length=100, primary_key=True)
     team_name = models.CharField(max_length=100, unique=True)
     team_code = models.CharField(max_length=50, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)

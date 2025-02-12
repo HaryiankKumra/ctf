@@ -16,6 +16,7 @@ def login(request):
             messages.error(request, 'Invalid team name or code')
     return render(request, 'ctf/login.html')
 
+
 def questions(request):
     if 'team_id' not in request.session:
         return redirect('login')
