@@ -1,4 +1,5 @@
 from pathlib import Path
+import mongoengine
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -52,20 +53,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ctf_hackathon.wsgi.application'
 
-# Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'portfolio',  # Your database name
-        'CLIENT': {
-            'host': 'mongodb+srv://haryiank:haryiank@portfolio.u4swx.mongodb.net/portfolio?retryWrites=true&w=majority',
-            'username': 'haryiank',  # Your MongoDB username
-            'password': 'haryiank',  # Your MongoDB password
-            'authSource': 'admin',  # Authentication database
-            'authMechanism': 'SCRAM-SHA-1',  # Authentication mechanism
-        }
-    }
-}
+# MongoDB Connection using mongoengine
+mongoengine.connect(
+    db='portfolio',
+    host='mongodb+srv://haryiank:haryiank@portfolio.u4swx.mongodb.net/portfolio?retryWrites=true&w=majority',
+    username='haryiank',
+    password='haryiank',
+    authentication_source='admin',
+)
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
